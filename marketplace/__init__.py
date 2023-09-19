@@ -1,13 +1,17 @@
 import os
 
-from flask import Flask
+from flask import Flask, flash, request, redirect, url_for
 from . import db
 from . import auth
 from . import store
 from . import cart
 from flask import send_from_directory
 from flask import render_template
+from werkzeug.utils import secure_filename
 import csv
+
+UPLOAD_FOLDER = ''
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 def create_app(test_config=None):
@@ -51,6 +55,42 @@ def create_app(test_config=None):
     def table(path):
         headers, rows = read_file(path)  # 'youtubers_df.csv')
         return render_template('table.html', headers=headers, rows=rows)
+
+    @app.route('/loader')
+    def loader():
+        return render_template('loader.html')
+
+    app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
+    app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
+    app.config['UPLOAD_PATH'] = 'uploads'
+    app.config['UPLOAD_FOLDER'] = ''
+
+    @app.errorhandler(413)
+    def too_large(e):
+        return "File is too large", 413
+
+    def allowed_file(filename):
+        return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+    @app.route('/upload_file', methods=['GET', 'POST'])
+    def upload_file():
+        if request.method == 'POST':
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            # If the user does not select a file, the browser submits an
+            # empty file without a filename.
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                return redirect(url_for('upload_file', name=filename))
+        return render_template('loader.html')
 
     # initialize app and blueprints
     db.init_app(app)
