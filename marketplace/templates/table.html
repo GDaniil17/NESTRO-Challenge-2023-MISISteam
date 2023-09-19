@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        .table {
+            border-spacing: 0;
+            margin: 1rem;
+            background-color: rgb(149, 198, 241);
+        }
+
+        .table__row:nth-child(even) {
+            background-color: rgb(238, 238, 238);
+        }
+
+        .table__header {
+            text-align: left;
+        }
+
+        .cart-image {
+            filter: brightness(0) invert(1);
+            width: 50%;
+            height: 50%;
+        }
+
+        .mt-10 {
+            margin-top: 10%;
+        }
+    </style>
 </head>
+
 <body>
     <table class="table">
         <tr class="table__header">
@@ -13,12 +39,13 @@
             {% endfor %}
         </tr>
         {% for row in rows %}
-            <tr class="table__row">
+        <tr class="table__row">
             {% for cell in row %}
-                <td class="table__cell">{{ cell }}</td>
+            <td class="table__cell">{{ cell }}</td>
             {% endfor %}
-            </tr>
+        </tr>
         {% endfor %}
     </table>
 </body>
+
 </html>

@@ -50,8 +50,6 @@ def create_app(test_config=None):
     @app.route('/table/<path>')
     def table(path):
         headers, rows = read_file(path)  # 'youtubers_df.csv')
-        print("!!!!!!!!!!!!!!!!!")
-        print(headers, rows)
         return render_template('table.html', headers=headers, rows=rows)
 
     # initialize app and blueprints
