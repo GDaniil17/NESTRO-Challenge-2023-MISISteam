@@ -7,6 +7,7 @@ from . import store
 from . import cart
 from flask import send_from_directory
 from flask import render_template
+import csv
 
 
 def create_app(test_config=None):
@@ -35,13 +36,22 @@ def create_app(test_config=None):
     def hello():
         return "Hello World!! 🤡"
 
-    headers = ('ФИО', 'Age', 'Sex')
-    rows = (('Боба Биба Бобович', '18', 'Male'),
-            ('Боба Биба Бобович', '20', 'Male')
-            )
+    def read_file(path):
+        with open(path, newline='') as file:
+            reader = csv.reader(file, quotechar='"')
+            lines = [tuple(row) for row in reader]
+        return (lines[0], lines[1:])
 
-    @app.route('/table')
-    def table():
+    # headers = ("Rank", "Username", "Categories", "Subscribers", "Country", "Visits", "Likes", "Comments" и "Links")
+    # rows = (('Боба Биба Бобович', '18', 'Male'),
+    #         ('Боба Биба Бобович', '20', 'Male')
+    #         )
+
+    @app.route('/table/<path>')
+    def table(path):
+        headers, rows = read_file(path)  # 'youtubers_df.csv')
+        print("!!!!!!!!!!!!!!!!!")
+        print(headers, rows)
         return render_template('table.html', headers=headers, rows=rows)
 
     # initialize app and blueprints
