@@ -15,11 +15,13 @@ def get_db():
 
     return g.db
 
+
 def close_db(e=None):
     db = g.pop('db', None)
 
     if db is not None:
         db.close()
+
 
 def init_db():
     db = get_db()
@@ -35,6 +37,24 @@ def init_db_command():
     init_db()
     click.echo('Initialized the database.')
 
+
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
+
+def get_all_items():
+    db = get_db()
+    query = 'SELECT * FROM items'
+    items = db.execute(query).fetchall()
+    item_list = []
+    for item in items:
+        item_dict = {
+            'id': item['id'],
+            'name': item['name'],
+            'description': item['description'],
+            'image': item['image'],
+            'price': item['price']
+        }
+        item_list.append(item_dict)
+    return item_list

@@ -6,10 +6,14 @@ from werkzeug.utils import secure_filename
 
 from marketplace.auth import login_required, admin_only
 from marketplace.db import get_db
+from flask import render_template, flash, redirect, url_for
+from .db import get_all_items
+
 
 bp = Blueprint('store', __name__)
 dir_path = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = dir_path + '/static/img'
+
 
 @bp.route('/')
 def index():
@@ -17,7 +21,7 @@ def index():
         return redirect(url_for('auth.login'))
     db = get_db()
     items = db.execute(
-        'SELECT i.id, i.item_name, i.item_description, i.item_image, i.price'
+        'SELECT *'
         ' FROM item i'
     ).fetchall()
     return render_template('store/index.html', items=items)
@@ -40,7 +44,7 @@ def create():
         if not item_name:
             error = 'Title is required.'
             flash(error)
-        else :
+        else:
             db = get_db()
             db.execute(
                 'INSERT INTO item (item_name, item_description, item_image, price)'
@@ -60,4 +64,20 @@ def delete(item_id):
     db = get_db()
     db.execute('DELETE FROM item WHERE id = ?', [item_id])
     db.commit()
+    return redirect(url_for('store.index'))
+
+
+# @bp.route('/store')
+# def index():
+#     items = get_all_items()
+#     return render_template('store/index.html', items=items)
+
+
+@bp.route('/store/item/<int:item_id>')
+def view_item(item_id):
+    db = get_db()
+    item = db.get_item_by_id(item_id)
+    if item:
+        return render_template('store/item.html', item=item)
+    flash('Item not found')
     return redirect(url_for('store.index'))

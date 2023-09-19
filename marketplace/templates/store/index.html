@@ -7,25 +7,20 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    {% for item in items %}
-      <div class="col-4 card">
-        <img height=auto width=300 class="card-img-top" src="../../static/img/{{ item['item_image'] }}" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">{{ item['item_name'] }}</h5>
-          <p class="card-text">{{ item['item_description']}}</p>
-          <div>
-            <form action="{{ url_for('cart.add_cart', item_id=item['id']) }}" method="post">
-              <input class="btn btn-primary" type="submit" value="Add to Cart">
-            </form>
-            {% if g.user['admin']%}
-              <form action="{{ url_for('store.delete', item_id=item['id']) }}" method="post">
-                <input class="btn btn-danger" type="submit" value="Remove">
-              </form>
-            {% endif %}
-        </div>
-        </div>
-      </div>
-    {% endfor %}
+{% for item in items %}
+<div class="col-4 card">
+  <img class="card-img-top" src="{{ url_for('static', filename='img/') }}" alt="{{ item['name'] }}">
+  <div class="card-body">
+    <h5 class="card-title">{{ item['name'] }}</h5>
+    <p class="card-text">{{ item['description'] }}</p>
+    <a href="{{ url_for('store.view_item', item_id=item['id']) }}" class="btn btn-primary">View Item</a>
+    <form action="{{ url_for('cart.add_cart', item_id=item['id']) }}" method="post">
+      <button class="btn btn-primary" type="submit">Add to Cart</button>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
   </div>
 </div>
 {% endblock %}

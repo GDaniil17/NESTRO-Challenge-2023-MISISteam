@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <img src="{{ url_for('static', filename='img/' + item['item_image']) }}" alt="{{ item['name'] }}">
+        </div>
+        <div class="col-6">
+            <h3>{{ item['name'] }}</h3>
+            <p>{{ item['description'] }}</p>
+            <p>Price: ${{ item['price'] }}</p>
+            <form action="{{ url_for('cart.add_cart', item_id=item['id']) }}" method="post">
+                <button class="btn btn-primary" type="submit">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

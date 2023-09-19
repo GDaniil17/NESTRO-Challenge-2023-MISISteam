@@ -5,6 +5,8 @@ from . import db
 from . import auth
 from . import store
 from . import cart
+from flask import send_from_directory
+
 
 def create_app(test_config=None):
     # create and configure the app
