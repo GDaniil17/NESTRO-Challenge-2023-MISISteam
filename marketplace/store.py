@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from marketplace.auth import login_required, admin_only
 from marketplace.db import get_db
 from flask import render_template, flash, redirect, url_for
-from .db import get_all_items
+from .db import get_all_items, get_item_by_id
 
 
 bp = Blueprint('store', __name__)
@@ -73,10 +73,19 @@ def delete(item_id):
 #     return render_template('store/index.html', items=items)
 
 
+# @bp.route('/store/item/<int:item_id>')
+# def view_item(item_id):
+#     db = get_db()
+#     item = db.get_item_by_id(item_id)
+#     if item:
+#         return render_template('store/item.html', item=item)
+#     flash('Item not found')
+#     return redirect(url_for('store.index'))
+
+
 @bp.route('/store/item/<int:item_id>')
 def view_item(item_id):
-    db = get_db()
-    item = db.get_item_by_id(item_id)
+    item = get_item_by_id(item_id)
     if item:
         return render_template('store/item.html', item=item)
     flash('Item not found')

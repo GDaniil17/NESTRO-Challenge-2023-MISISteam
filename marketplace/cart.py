@@ -7,6 +7,7 @@ from marketplace.auth import login_required
 
 bp = Blueprint('cart', __name__)
 
+
 @bp.route('/add_cart/<int:item_id>', methods=['POST'])
 @login_required
 def add_cart(item_id):
@@ -20,12 +21,13 @@ def add_cart(item_id):
     flash("Item successfully added to cart", 'success')
     return redirect(url_for('store.index'))
 
+
 @bp.route('/checkout', methods=['GET'])
 @login_required
 def checkout():
     db = get_db()
     cart_items = db.execute(
-        'SELECT cart_id, i.item_name, i.price, i.item_image FROM cart c'
+        'SELECT cart_id, i.item_name, i.price, i.item_image, i.description FROM cart c'
         ' INNER JOIN item i ON c.item_id = i.id'
         ' WHERE c.user_id = ?',
         [g.user['id']]

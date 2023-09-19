@@ -45,12 +45,12 @@ def init_app(app):
 
 def get_all_items():
     db = get_db()
-    query = 'SELECT * FROM items'
+    query = 'SELECT * FROM cart'
     items = db.execute(query).fetchall()
     item_list = []
     for item in items:
         item_dict = {
-            'id': item['id'],
+            'item_name': item['item_name'],
             'name': item['name'],
             'description': item['description'],
             'image': item['image'],
@@ -58,3 +58,12 @@ def get_all_items():
         }
         item_list.append(item_dict)
     return item_list
+
+
+def get_item_by_id(item_id):
+    db = get_db()
+    query = 'SELECT * FROM cart WHERE item_id = ?'
+    item = db.execute(query, (item_id,)).fetchone()
+    if item:
+        return item
+    return None

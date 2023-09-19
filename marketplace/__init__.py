@@ -6,6 +6,7 @@ from . import auth
 from . import store
 from . import cart
 from flask import send_from_directory
+from flask import render_template
 
 
 def create_app(test_config=None):
@@ -33,6 +34,15 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return "Hello World!! 🤡"
+
+    headers = ('ФИО', 'Age', 'Sex')
+    rows = (('Боба Биба Бобович', '18', 'Male'),
+            ('Боба Биба Бобович', '20', 'Male')
+            )
+
+    @app.route('/table')
+    def table():
+        return render_template('table.html', headers=headers, rows=rows)
 
     # initialize app and blueprints
     db.init_app(app)
