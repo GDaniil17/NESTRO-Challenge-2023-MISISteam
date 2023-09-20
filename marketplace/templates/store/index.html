@@ -1,27 +1,85 @@
-{% extends 'base.html' %}
 
 {% block header %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <title>Combined HTML and CSS</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      font-size: .8125rem;
+      font-weight: 400;
+      line-height: 1.5385;
+      color: #333;
+      text-align: left;
+      background-color: #f5f5f5;
+    }
 
+    .mt-50 {
+      margin-top: 50px;
+    }
+
+    .mb-50 {
+      margin-bottom: 50px;
+    }
+
+    .bg-teal-400 {
+      background-color: #26a69a;
+    }
+
+    a {
+      text-decoration: none !important;
+    }
+
+    .fa {
+      color: red;
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="row">
-{% for item in items %}
-<div class="col-4 card">
-  <img class="card-img-top" src="{{ url_for('static', filename='img/' + item['item_image']) }}" alt="{{ item['name'] }}">
-  <div class="card-body">
-    <h5 class="card-title">{{ item['name'] }}</h5>
-    <p class="card-text">{{ item['description'] }}</p>
-    <a href="{{ url_for('store.view_item', item_id=item['id']) }}" class="btn btn-primary">View Item</a>
-    <form action="{{ url_for('cart.add_cart', item_id=item['id']) }}" method="post">
-      <button class="btn btn-primary" type="submit">Add to Cart</button>
-    </form>
-  </div>
-</div>
-{% endfor %}
 
+  <div class="container d-flex justify-content-center mt-50 mb-50">
+    <div class="row">
 
+      {% for item in items %}
+      <div class="col-md-4" style="margin-bottom: 10px">
+        <div class="card card-body">
+          <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+            <div class="mr-2 mb-3 mb-lg-0">
+              <img src="{{ url_for('static', filename='img/' + item['item_image']) }}" width="150" height="150" alt="{{ item['name'] }}">
+            </div>
+            <div class="media-body">
+              <h6 class="media-title font-weight-semibold">
+                <a href="#" data-abc="true">{{ item['name'] }}</a>
+              </h6>
+
+              <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">row.dataset_category</a>
+                </li>
+              </ul>
+
+              <p class="mb-3">row.dataset_description</p>
+
+              <ul class="list-inline list-inline-dotted mb-0">
+                <li class="list-inline-item">Все товары от <a href="#" data-abc="true">{ow.dataset_author</a></li>
+                <li class="list-inline-item">Добавить в <a href="#" data-abc="true">список желаний</a>
+                </li>
+              </ul>
+
+            </div>
+
+            <div class="text-muted">row.dataset_number_views просмотра</div>
+            <form action="{{ url_for('cart.add_cart', item_id=item['id']) }}" method="post">
+                <button type="button" type="submit" class="btn btn-warning mt-4 text-white">Добавить в корзину</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
-</div>
+
 {% endblock %}

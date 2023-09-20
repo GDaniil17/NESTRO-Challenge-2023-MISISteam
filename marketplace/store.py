@@ -24,6 +24,20 @@ def index():
         'SELECT *'
         ' FROM item i'
     ).fetchall()
+    rows = [
+        {'dataset_name': "Датасет 1", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+         'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+        {'dataset_name': "Датасет 2", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+         'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+        {'dataset_name': "Датасет 3", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+         'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+        {'dataset_name': "Датасет 4", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+         'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+        {'dataset_name': "Датасет 5", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+         'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+        {'dataset_name': "Датасет 6", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+         'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'}
+    ]
     return render_template('store/index.html', items=items)
 
 

@@ -17,14 +17,25 @@
         <table id="datatable" class="table">
             <thead>
                 <tr>
-                    <th>DatasetID</th>
+                    {% for header in headers %}
+                        <th>{{ header}}</th>
+                    {% endfor %}
+                    <!-- <th>DatasetID</th>
                     <th>DatasetName</th>
                     <th>DatasetSource</th>
-                    <th>DatasetCreatedAt</th>
+                    <th>DatasetCreatedAt</th> -->
                 </tr>
             </thead>
             <tbody>
+                {% for row in rows %}
                 <tr>
+                    {% for cell in row %}
+                    <td >{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                <!-- <tr>
                     <td>1</td>
                     <td><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Датасет о нефти</td>
                     <td>Компания Альфа</td>
@@ -125,7 +136,7 @@
                     <td><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Датасет о языках программирования</td>
                     <td>Компания Тау</td>
                     <td>2023-05-17</td>
-                </tr>
+                </tr> -->
 
             </tbody>
         </table>

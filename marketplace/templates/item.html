@@ -44,48 +44,46 @@
 <body>
     <div class="container d-flex justify-content-center mt-50 mb-50">
         <div class="row">
-            <div class="col-md-4" style = "margin-bottom: 10px">
-                <div class="card card-body">
-                    <div
-                        class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
-                        <div class="mr-2 mb-3 mb-lg-0">
-                            <img src="https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13"
-                                width="150" height="150" alt="">
-                        </div>
-                        <div class="media-body">
-                            <h6 class="media-title font-weight-semibold">
-                                <a href="#" data-abc="true">Датасет о нефти и золоте</a>
-                            </h6>
-                            <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
-                                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">Рынки
-                                        сырья</a></li>
-                            </ul>
-                            <p class="mb-3">Датасет содержит информацию о ценах на нефть и золото, объемах добычи,
-                                экспорта и других параметрах рынков сырья.</p>
-                            <ul class="list-inline list-inline-dotted mb-0">
-                                <li class="list-inline-item">Все товары от <a href="#" data-abc="true">Commodity Data
-                                        Corp.</a></li>
-                                <li class="list-inline-item">Добавить в <a href="#" data-abc="true">список желаний</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
 
-                        </div>
-                        <div>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="text-muted">1985 просмотра</div>
-                        <button type="button" class="btn btn-warning mt-4 text-white"><i
-                                class="icon-cart-add mr-2"></i>Добавить в корзину</button>
+        {% for row in rows %}
+        <div class="col-md-4" style="margin-bottom: 10px">
+            <div class="card card-body">
+                <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+                    <div class="mr-2 mb-3 mb-lg-0">
+                        <img src="{{row.image_link}}" width="150" height="150" alt="">
                     </div>
+                    <div class="media-body">
+                        <h6 class="media-title font-weight-semibold">
+                            <a href="#" data-abc="true">{{row.dataset_name}}</a>
+                        </h6>
+
+                        <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                            <li class="list-inline-item"><a href="#" class="text-muted"
+                                    data-abc="true">{{row.dataset_category}}</a></li>
+                        </ul>
+
+                        <p class="mb-3">{{row.dataset_description}}</p>
+
+                        <ul class="list-inline list-inline-dotted mb-0">
+                            <li class="list-inline-item">Все товары от <a href="#" data-abc="true">{{row.dataset_author}}</a></li>
+                            <li class="list-inline-item">Добавить в <a href="#" data-abc="true">список желаний</a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="text-muted">{{row.dataset_number_views}} просмотра</div>
+
+                    <button type="button" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i>Добавить в
+                        корзину</button>
                 </div>
             </div>
-            <!-- Добавьте блоки для остальных 5 товаров -->
-            <div class="col-md-4" style = "margin-bottom: 10px">
+        </div>
+        {% endfor %}
+
+
+
+            <!-- <div class="col-md-4" style = "margin-bottom: 10px">
                 <div class="card card-body">
                     <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
                         <div class="mr-2 mb-3 mb-lg-0">
@@ -160,7 +158,7 @@
                         <button type="button" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i>Добавить в корзину</button>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </body>

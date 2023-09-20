@@ -54,11 +54,25 @@ def create_app(test_config=None):
     @app.route('/table/<path>')
     def table(path):
         headers, rows = read_file(path)  # 'youtubers_df.csv')
-        return render_template('table.html', headers=headers, rows=rows)
+        return render_template('columns.html', headers=headers, rows=rows)
 
     @app.route('/item')
     def item_path():
-        return render_template('item.html')
+        rows = [
+            {'dataset_name': "Датасет 1", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+                'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+            {'dataset_name': "Датасет 2", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+                'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+            {'dataset_name': "Датасет 3", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+                'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+            {'dataset_name': "Датасет 4", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+                'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+            {'dataset_name': "Датасет 5", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+                'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'},
+            {'dataset_name': "Датасет 6", 'image_link': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
+                'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10000009'}
+        ]
+        return render_template('item.html', rows=rows)
 
     @app.route('/columns')
     def get_columns():
