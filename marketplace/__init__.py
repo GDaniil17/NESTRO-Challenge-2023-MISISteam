@@ -60,6 +60,10 @@ def create_app(test_config=None):
     def item_path():
         return render_template('item.html')
 
+    @app.route('/columns')
+    def get_columns():
+        return render_template('columns.html')
+
     @app.route('/loader')
     def loader():
         return render_template('loader.html')
