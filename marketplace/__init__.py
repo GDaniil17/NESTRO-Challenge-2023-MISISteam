@@ -56,6 +56,10 @@ def create_app(test_config=None):
         headers, rows = read_file(path)  # 'youtubers_df.csv')
         return render_template('table.html', headers=headers, rows=rows)
 
+    @app.route('/item')
+    def item_path():
+        return render_template('item.html')
+
     @app.route('/loader')
     def loader():
         return render_template('loader.html')

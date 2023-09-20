@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Combined HTML and CSS</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-size: .8125rem;
+            font-weight: 400;
+            line-height: 1.5385;
+            color: #333;
+            text-align: left;
+            background-color: #f5f5f5;
+        }
+
+        .mt-50 {
+            margin-top: 50px;
+        }
+
+        .mb-50 {
+            margin-bottom: 50px;
+        }
+
+        .bg-teal-400 {
+            background-color: #26a69a;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .fa {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center mt-50 mb-50">
+        <div class="row">
+            <div class="col-md-4" style = "margin-bottom: 10px">
+                <div class="card card-body">
+                    <div
+                        class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+                        <div class="mr-2 mb-3 mb-lg-0">
+                            <img src="https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13"
+                                width="150" height="150" alt="">
+                        </div>
+                        <div class="media-body">
+                            <h6 class="media-title font-weight-semibold">
+                                <a href="#" data-abc="true">Датасет о нефти и золоте</a>
+                            </h6>
+                            <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">Рынки
+                                        сырья</a></li>
+                            </ul>
+                            <p class="mb-3">Датасет содержит информацию о ценах на нефть и золото, объемах добычи,
+                                экспорта и других параметрах рынков сырья.</p>
+                            <ul class="list-inline list-inline-dotted mb-0">
+                                <li class="list-inline-item">Все товары от <a href="#" data-abc="true">Commodity Data
+                                        Corp.</a></li>
+                                <li class="list-inline-item">Добавить в <a href="#" data-abc="true">список желаний</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
+
+                        </div>
+                        <div>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="text-muted">1985 просмотра</div>
+                        <button type="button" class="btn btn-warning mt-4 text-white"><i
+                                class="icon-cart-add mr-2"></i>Добавить в корзину</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Добавьте блоки для остальных 5 товаров -->
+            <div class="col-md-4" style = "margin-bottom: 10px">
+                <div class="card card-body">
+                    <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+                        <div class="mr-2 mb-3 mb-lg-0">
+                            <img src="//avatars.mds.yandex.net/i?id=bb27de60ade4f111d026f4298090860c_l-7086222-images-thumbs&n=13"
+                                width="150" height="150" alt="">
+                        </div>
+                        <div class="media-body">
+                            <h6 class="media-title font-weight-semibold">
+                                <a href="#" data-abc="true">Датасет о нефти</a>
+                            </h6>
+                            <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">Рынки сырья</a></li>
+                                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">Котировки</a></li>
+                            </ul>
+                            <p class="mb-3">Датасет содержит информацию о ценах на нефть, объемах добычи, экспорта и других параметрах
+                                нефтяной индустрии.</p>
+                            <ul class="list-inline list-inline-dotted mb-0">
+                                <li class="list-inline-item">Все товары от <a href="#" data-abc="true">Oil Data Corp.</a></li>
+                                <br>
+                                <li class="list-inline-item">Добавить в <a href="#" data-abc="true">список желаний</a></li>
+                            </ul>
+                        </div>
+                        <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
+
+                        </div>
+                        <div>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="text-muted">43 просмотра</div>
+                        <button type="button" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i>Добавить в корзину</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style = "margin-bottom: 10px" style = "margin-bottom: 10px">
+                <div class="card card-body">
+                    <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+                        <div class="mr-2 mb-3 mb-lg-0">
+                            <img src="//avatars.mds.yandex.net/i?id=a6b0048694f22b7d4cc556409d55912f_l-5232766-images-thumbs&n=13"
+                                width="150" height="150" alt="">
+                        </div>
+                        <div class="media-body">
+                            <h6 class="media-title font-weight-semibold">
+                                <a href="#" data-abc="true">Датасет об АЭС</a>
+                            </h6>
+                            <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">Атом</a></li>
+                                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">Энергетика</a></li>
+                                <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">Экономика</a></li>
+                            </ul>
+                            <p class="mb-3">Датасет содержит информацию о перспективных местах постройки АЭС.</p>
+                            <br>
+                            <ul class="list-inline list-inline-dotted mb-0">
+                                <li class="list-inline-item">Все товары от <a href="#" data-abc="true">РОСАТОМ.</a></li>
+                                <br>
+                                <li class="list-inline-item">Добавить в <a href="#" data-abc="true">список желаний</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
+
+                        </div>
+                        <div>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="text-muted">151041 просмотра</div>
+                        <button type="button" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i>Добавить в корзину</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
