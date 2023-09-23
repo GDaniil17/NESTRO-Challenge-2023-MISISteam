@@ -16,7 +16,9 @@ CREATE TABLE item (
     item_name TEXT NOT NULL,
     item_description TEXT,
     item_image BLOB,
-    dataset_author TEXT NOT NULL
+    dataset_author TEXT NOT NULL,
+    file_name TEXT NOT NULL,
+    secured_name TEXT NOT NULL
 );
 
 CREATE TABLE cart (

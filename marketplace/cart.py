@@ -1,6 +1,7 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
+import csv
 
 from marketplace.db import get_db
 from marketplace.auth import login_required
@@ -38,6 +39,38 @@ def add_cart(item_id):
     print("Item added!")
     # flash("Item successfully added to cart", 'success')
     return redirect(url_for('store.index'))
+
+
+def read_file(path):
+    import os
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    print(f"!!!!(((((()))))) {dir_path}")
+    with open(dir_path+"/"+path, newline='') as file:
+        reader = csv.reader(file, quotechar='"')
+        lines = [tuple(row) for row in reader]
+    return (lines[0], lines[1:])
+
+
+def table(path):
+    headers, rows = read_file(path)  # 'youtubers_df.csv')
+    return render_template('columns.html', headers=headers, rows=rows)
+
+
+@bp.route('/preview/<int:item_id>', methods=['POST'])
+@login_required
+def preview(item_id):
+    db = get_db()
+    print(f"get db!!!! {item_id}")
+    file_name = db.execute(
+        'SELECT file_name, id FROM item '
+        f'WHERE id = {item_id}'
+    ).fetchone()
+
+    db.commit()
+    print("Item selected!")
+    path = f"static/files/{file_name['file_name']}"
+    # flash("Item successfully added to cart", 'success')
+    return table(path)
 
 
 @bp.route('/checkout', methods=['GET'])
