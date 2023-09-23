@@ -14,8 +14,8 @@
 
 
         <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Поиск</button>
         </form>
     </div>
 </nav>
@@ -57,7 +57,7 @@
                 </div>
                 <div style="display: flex; align-items: center;">
                     <img width="200px" height="200px" src="../../static/img/{{ item['item_image'] }}">
-                    <p style="margin-left: 10px;">{{ item['item_description'] }}</p>
+                    <p style="margin-left: 10px; overflow: auto;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ item['item_description'] }}">{{ item['item_description'] }}</p>
                 </div>
             </div>
             {% endfor %}

@@ -1,11 +1,13 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, send_file, redirect, Flask
 )
 import csv
 
 from marketplace.db import get_db
 from marketplace.auth import login_required
 from flask import Blueprint, g, flash, redirect, url_for
+from flask_mail import Mail
+from flask_mail import Message
 
 
 bp = Blueprint('cart', __name__)
@@ -32,8 +34,9 @@ def add_cart(item_id):
     print("get db!")
     db.execute(
         'INSERT INTO cart (user_id, item_id)'
-        ' VALUES (?, ?)',
-        (g.user['id'], item_id)
+        ' SELECT ?, ?'
+        ' WHERE NOT EXISTS (SELECT 1 FROM cart WHERE item_id = ?)',
+        (g.user['id'], item_id, item_id)
     )
     db.commit()
     print("Item added!")
@@ -56,7 +59,7 @@ def table(path):
     return render_template('columns.html', headers=headers, rows=rows)
 
 
-@bp.route('/preview/<int:item_id>', methods=['POST'])
+@bp.route('/preview/<int:item_id>', methods=['POST', 'GET'])
 @login_required
 def preview(item_id):
     db = get_db()
@@ -100,3 +103,52 @@ def delete_item(cart_item_id):
     db.execute('DELETE FROM cart WHERE cart_id = ?', [cart_item_id])
     db.commit()
     return redirect(url_for('cart.checkout'))
+
+
+def get_PATH_by_item_id(item_id):
+    db = get_db()
+    file_name = db.execute(
+        'SELECT original_file_name, id FROM item '
+        f'WHERE id = {item_id}'
+    ).fetchone()
+    # lsx csv
+    db.commit()
+    import os
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    print(dir_path+"/static/files/"+file_name['original_file_name'])
+    return dir_path+"/static/files/"+file_name['original_file_name']
+
+
+@bp.route('/download/<int:item_id>', methods=['POST'])
+@login_required
+def download_item(item_id):
+    PATH = get_PATH_by_item_id(item_id)
+    print("!!!!(((((()))))) ", PATH)
+    if PATH:
+        return send_file(PATH, as_attachment=True)
+    else:
+        flash('Файл не найден.')
+
+    # return redirect(url_for('cart.checkout'))
+
+
+@bp.route('/mail/<int:item_id>', methods=['POST'])
+@login_required
+def mail_item(item_id):
+    import os
+    print("HERE")
+    PATH = get_PATH_by_item_id(item_id)
+    db = get_db()
+    file_name = db.execute(
+        'SELECT id, item_description, item_name FROM item '
+        f'WHERE id = {item_id}'
+    ).fetchone()
+
+    print("!!!!(****** ", PATH, os.path.isfile(PATH))
+    email_address = ''
+    subject = 'Датасет - '+str(file_name['item_name'])
+    body = 'Описание датасета - ' + str(file_name['item_description'])
+    attachment_path = PATH
+    mailto_link = f"mailto:{email_address}?subject={subject}&body={body}&attachments={attachment_path}"
+
+    return redirect(mailto_link)

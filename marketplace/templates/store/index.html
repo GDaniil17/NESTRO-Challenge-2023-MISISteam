@@ -10,8 +10,8 @@
 
 
     <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
+      <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Поиск</button>
     </form>
   </div>
 </nav>
@@ -36,12 +36,15 @@
     text-overflow: ellipsis;
     -webkit-line-clamp: 2;
     line-clamp: 2;
+    max-height: 3.6em; /* Вы можете настроить это значение в зависимости от размера шрифта и интервала между строками */
   }
 
   .card-body .media-body .description:hover {
     -webkit-line-clamp: unset;
     line-clamp: unset;
+    max-height: unset;
   }
+
 </style>
 
 <div class="container mt-50 mb-50">
@@ -57,34 +60,43 @@
             <h6 class="media-title font-weight-semibold">
               <a href="#" data-abc="true">{{ item['item_name'] }}</a>
             </h6>
-            <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+
+            <ul class="list-inline list-inline-dotted mb-3 mb-lg-2" style="overflow: auto;" data-bs-toggle="tooltip"
+            data-bs-placement="bottom" title="{{item['item_description']}}">
               <li class="list-inline-item">
-                <a href="#" class="text-muted description" data-abc="true">{{item['item_description']}}</a>
+                <p href="#" class="text-muted description" data-abc="true">{{item['item_description']}}</p>
               </li>
             </ul>
+
             <ul class="list-inline list-inline-dotted mb-0">
               <li class="list-inline-item">Теги : <a href="#" data-abc="true">{{item['dataset_author']}}</a></li>
               <br>
             </ul>
           </div>
           <br>
-    <form action="{{ url_for('cart.preview', item_id=item['id']) }}" method="post">
-      <input class="btn btn-primary" type="submit" value="    Просмотреть    " style="background-color: #35aa5b;"
-        onclick="console.log(item)">
-    </form>
+
+        <form action="{{ url_for('cart.preview', item_id=item['id']) }}" method="post">
+          <input class="btn btn-primary" type="submit" value="    Просмотреть    " style="background-color: #35aa5b;"
+            onclick="console.log(item)">
+        </form>
 
           <form action="{{ url_for('cart.add_cart', item_id=item['id']) }}" method="post">
-            <input class="btn btn-primary" type="submit" value="Добавить в набор" onclick="console.log(item)">
+            <input class="btn btn-primary" type="submit" value="Добавить в выгрузку" onclick="console.log(item)">
           </form>
+
+          <form action="{{ url_for('cart.mail_item', item_id=item['id']) }}" method="post" style="display: inline-block;">
+            <input class="btn btn-primary" type="submit" value="     Email      " style="background-color: #729299;"
+              onclick="console.log(item)">
+          </form>
+
+          <form action="{{ url_for('cart.download_item', item_id=item['id']) }}" method="post" style="display: inline-block;">
+            <input class="btn btn-primary" type="submit" value=" ⤓ " style="background-color: #50696e" onclick="console.log(item)">
+          </form>
+
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
 </div>
-
-
-
-
-
 {% endblock %}

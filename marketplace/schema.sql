@@ -18,7 +18,8 @@ CREATE TABLE item (
     item_image BLOB,
     dataset_author TEXT NOT NULL,
     file_name TEXT NOT NULL,
-    secured_name TEXT NOT NULL
+    secured_name TEXT NOT NULL,
+    original_file_name TEXT NOT NULL
 );
 
 CREATE TABLE cart (

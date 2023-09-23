@@ -34,7 +34,8 @@ def index():
                'item_image BLOB,'
                'dataset_author TEXT NOT NULL,'
                'file_name TEXT NOT NULL,'
-               'secured_name TEXT NOT NULL)')
+               'secured_name TEXT NOT NULL,'
+               'original_file_name TEXT NOT NULL)')
 
     db.execute('CREATE TABLE IF NOT EXISTS cart (cart_id INTEGER PRIMARY KEY AUTOINCREMENT,'
                'user_id INTEGER NOT NULL,'
@@ -47,20 +48,6 @@ def index():
         ' FROM item i'
     ).fetchall()
     print(items)
-    # items = [
-    #     {'id': 0, 'dataset_name': "Датасет 1", 'item_image': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
-    #      'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '10009'},
-    #     {'id': 1, 'dataset_name': "Датасет 2", 'item_image': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
-    #      'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '1009'},
-    #     {'id': 2, 'dataset_name': "Датасет 3", 'item_image': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
-    #      'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '109'},
-    #     {'id': 3, 'dataset_name': "Датасет 4", 'item_image': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
-    #      'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '19'},
-    #     {'id': 4, 'dataset_name': "Датасет 5", 'item_image': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
-    #      'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '9'},
-    #     {'id': 5, 'dataset_name': "Датасет 6", 'item_image': 'https://avatars.mds.yandex.net/i?id=39cddff1f46a9e611501ea7b6c804ab4_l-5222489-images-thumbs&n=13', 'dataset_category': 'porn',
-    #      'dataset_description': 'really', 'dataset_author': 'your m', 'dataset_number_views': '91'}
-    # ]
     return render_template('store/index.html', items=items)
 
 
@@ -96,6 +83,8 @@ def create():
             # )
             # db.commit()
             file_name = secured_name + '.'+(item_file.filename.split('.')[-1])
+            original_file_name = file_name
+
             item_file.save(os.path.join(FILE_FOLDER, file_name))
             if (item_file.filename.split('.')[-1]) == "xlsx":
                 print("Get xlsx!!!!!!!!!!!!!!!")
@@ -104,12 +93,7 @@ def create():
                 print("2!")
                 PATH = os.path.join(FILE_FOLDER, secured_name)
                 data.to_csv(PATH+'.csv', index=False)
-
-                # item_file.save(os.path.join(FILE_FOLDER, data.to_csv(
-                #     secured_name + '.csv', index=False)))
                 file_name = secured_name + '.csv'
-               # item_file.(os.path.join(FILE_FOLDER, file_name))
-               # os.remove(PATH+'.xlsx')
 
         else:
             error = 'Нужно выбрать файл с данными'
@@ -129,10 +113,10 @@ def create():
             print((item_name, item_description,
                   item_image.filename, dataset_author, file_name))
             db.execute(
-                'INSERT INTO item (item_name, item_description, item_image, dataset_author, secured_name, file_name)'
-                ' VALUES (?, ?, ?, ?, ?, ?)',
+                'INSERT INTO item (item_name, item_description, item_image, dataset_author, secured_name, file_name, original_file_name)'
+                ' VALUES (?, ?, ?, ?, ?, ?, ?)',
                 (item_name, item_description, item_image.filename,
-                 dataset_author, secured_name, file_name)
+                 dataset_author, secured_name, file_name, original_file_name)
             )
             db.commit()
 
