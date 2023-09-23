@@ -4,6 +4,8 @@ from flask import (
 import os
 import uuid
 from werkzeug.utils import secure_filename
+import pandas as pd
+import openpyxl
 
 from marketplace.auth import login_required, admin_only
 from marketplace.db import get_db
@@ -74,10 +76,12 @@ def create():
         item_description = data["item_description"]
         item_image = request.files["item_image"]
         item_file = request.files["item_file"]
-        print(f"!!!!!!!!!!)))__ {item_file}")
+        print("PATH", request.files["item_file"])
+
+        print(f"!!!!!!!!!!)))__ {len(item_file.filename)}")
         dataset_author = data["dataset_author"]
 
-        if item_file:
+        if len(item_file.filename) != 0:
             secure_filename(item_file.filename)
             secured_name = uuid.uuid4().hex
 
@@ -93,9 +97,24 @@ def create():
             # db.commit()
             file_name = secured_name + '.'+(item_file.filename.split('.')[-1])
             item_file.save(os.path.join(FILE_FOLDER, file_name))
+            if (item_file.filename.split('.')[-1]) == "xlsx":
+                print("Get xlsx!!!!!!!!!!!!!!!")
+                print(os.path.join(FILE_FOLDER, file_name))
+                data = pd.read_excel(os.path.join(FILE_FOLDER, file_name))
+                print("2!")
+                PATH = os.path.join(FILE_FOLDER, secured_name)
+                data.to_csv(PATH+'.csv', index=False)
+
+                # item_file.save(os.path.join(FILE_FOLDER, data.to_csv(
+                #     secured_name + '.csv', index=False)))
+                file_name = secured_name + '.csv'
+               # item_file.(os.path.join(FILE_FOLDER, file_name))
+               # os.remove(PATH+'.xlsx')
+
         else:
             error = 'Нужно выбрать файл с данными'
             flash(error)
+            return render_template('store/create.html')
 
         if item_image:
             secure_filename(item_image.filename)
