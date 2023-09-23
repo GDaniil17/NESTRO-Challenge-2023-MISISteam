@@ -63,6 +63,7 @@ def create():
         item_description = data["item_description"]
         item_image = request.files["item_image"]
         item_file = request.files["item_file"]
+        errors = []
         print("PATH", request.files["item_file"])
 
         print(f"!!!!!!!!!!)))__ {len(item_file.filename)}")
@@ -97,8 +98,26 @@ def create():
 
         else:
             error = 'Нужно выбрать файл с данными'
+            errors.append(error)
             flash(error)
-            return render_template('store/create.html')
+            print(error)
+            # return render_template('store/create.html')
+
+        if not item_description:
+            error = 'Описание обязательно'
+            errors.append(error)
+            flash(error)
+            print(error)
+        if not item_image:
+            error = 'Изображение обязательно'
+            errors.append(error)
+            flash(error)
+            print(error)
+        if not item_file:
+            error = 'Набор данных обязателен'
+            errors.append(error)
+            flash(error)
+            print(error)
 
         if item_image:
             secure_filename(item_image.filename)
@@ -106,22 +125,27 @@ def create():
 
         if not item_name:
             error = 'Заголовок обязателен'
+            errors.append(error)
             flash(error)
+            print(error)
         else:
-            db = get_db()
-            print("Get to DB")
-            print((item_name, item_description,
-                  item_image.filename, dataset_author, file_name))
-            db.execute(
-                'INSERT INTO item (item_name, item_description, item_image, dataset_author, secured_name, file_name, original_file_name)'
-                ' VALUES (?, ?, ?, ?, ?, ?, ?)',
-                (item_name, item_description, item_image.filename,
-                 dataset_author, secured_name, file_name, original_file_name)
-            )
-            db.commit()
+            try:
+                db = get_db()
+                print("Get to DB")
+                print((item_name, item_description,
+                       item_image.filename, dataset_author, file_name))
+                db.execute(
+                    'INSERT INTO item (item_name, item_description, item_image, dataset_author, secured_name, file_name, original_file_name)'
+                    ' VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    (item_name, item_description, item_image.filename,
+                     dataset_author, secured_name, file_name, original_file_name)
+                )
+                db.commit()
 
-            print(item_name + ' was added to the store', 'success')
-            flash(item_name + ' was added to the store', 'success')
+                print(item_name + ' was added to the store', 'success')
+                flash(item_name + ' was added to the store', 'success')
+            except:
+                return render_template('store/create.html', errors=errors)
 
     return render_template('store/create.html')
 
