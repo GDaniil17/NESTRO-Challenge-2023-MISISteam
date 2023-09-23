@@ -4,21 +4,39 @@ from flask import (
 
 from marketplace.db import get_db
 from marketplace.auth import login_required
+from flask import Blueprint, g, flash, redirect, url_for
+
 
 bp = Blueprint('cart', __name__)
 
+
+# @bp.route('/add_cart/<int:item_id>', methods=['POST'])
+# @login_required
+# def add_cart(item_id):
+#     db = get_db()
+#     db.execute(
+#         'INSERT INTO cart (user_id, item_id)'
+#         ' VALUES (?, ?)',
+#         (g.user['id'], item_id)
+#     )
+#     db.commit()
+#     print("Item added!")
+#     flash("Item successfully added to cart", 'success')
+#     return redirect(url_for('store.index'))
 
 @bp.route('/add_cart/<int:item_id>', methods=['POST'])
 @login_required
 def add_cart(item_id):
     db = get_db()
+    print("get db!")
     db.execute(
         'INSERT INTO cart (user_id, item_id)'
         ' VALUES (?, ?)',
         (g.user['id'], item_id)
     )
     db.commit()
-    flash("Item successfully added to cart", 'success')
+    print("Item added!")
+    # flash("Item successfully added to cart", 'success')
     return redirect(url_for('store.index'))
 
 
@@ -26,15 +44,17 @@ def add_cart(item_id):
 @login_required
 def checkout():
     db = get_db()
+    all = db.execute('Select * from cart').fetchall()
+    print(all)
     cart_items = db.execute(
-        'SELECT cart_id, i.item_name, i.price, i.item_image FROM cart c'
+        'SELECT cart_id, i.item_name, i.dataset_author, i.item_description, i.item_image FROM cart c'
         ' INNER JOIN item i ON c.item_id = i.id'
         ' WHERE c.user_id = ?',
         [g.user['id']]
     ).fetchall()
     total_price = 0
-    for item in cart_items:
-        total_price = total_price + item['price']
+    # for item in cart_items:
+    #     total_price = total_price + item['price']
     return render_template('cart/checkout.html', cart_items=cart_items, total_price=total_price)
 
 

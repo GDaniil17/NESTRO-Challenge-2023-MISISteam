@@ -6,6 +6,7 @@ CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   username TEXT UNIQUE NOT NULL,
+  email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   admin INTEGER NOT NULL
 );
@@ -15,7 +16,7 @@ CREATE TABLE item (
     item_name TEXT NOT NULL,
     item_description TEXT,
     item_image BLOB,
-    price INTEGER NOT NULL
+    dataset_author TEXT NOT NULL
 );
 
 CREATE TABLE cart (
