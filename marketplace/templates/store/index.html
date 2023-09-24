@@ -67,45 +67,31 @@
               <li class="list-inline-item">
                 <p href="#" class="text-muted description" data-abc="true">{{item['item_description']}}</p>
               </li>
-            </ul>
+            <!-- </ul>
 
             <ul class="list-inline list-inline-dotted mb-0">
               <li class="list-inline-item">Теги : <a href="#" data-abc="true">{{item['dataset_author']}}</a></li>
               <br>
-            </ul>
+            </ul> -->
           </div>
-          <br>
 
 
 
-<div class="d-inline-flex">
 
-  <span class="badge p-2 align-items-center text-primary-emphasis bg-primary-subtle rounded-pill">
-    <span class="px-1">Excel</span>
-    <a href="#" class="text-decoration-none">
-      <svg class="bi ms-1" width="16" height="16">
-        <use xlink:href="#x-circle-fill"></use>
-      </svg>
-    </a>
-  </span>
+<div class="d-inline-flex" style="overflow: auto; padding-bottom: 5px; ">
 
-  <span class="badge p-2 align-items-center text-secondary-emphasis bg-secondary-subtle rounded-pill">
-    <span class="px-1">Educational</span>
-    <a href="#" class="text-decoration-none">
-      <svg class="bi ms-1" width="16" height="16">
-        <use xlink:href="#x-circle-fill"></use>
-      </svg>
-    </a>
-  </span>
+{% for tag in item['dataset_author'].split(",") %}
 
-  <span class="badge p-2 align-items-center text-secondary-emphasis bg-secondary-subtle rounded-pill">
-    <span class="px-1">Test</span>
-    <a href="#" class="text-decoration-none">
-      <svg class="bi ms-1" width="16" height="16">
-        <use xlink:href="#x-circle-fill"></use>
-      </svg>
-    </a>
-  </span>
+<span class="badge p-2 align-items-center text-primary-emphasis bg-primary-subtle rounded-pill" style="margin: 5px;">
+  <a href="/tag/{{tag}}" class="text-decoration-none">
+    <span class="px-1">{{tag}}</span>
+    <svg class="bi ms-1" width="16" height="16">
+      <use xlink:href="#x-circle-fill"></use>
+    </svg>
+  </a>
+</span>
+
+  {% endfor %}
 
 </div>
 

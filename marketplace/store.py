@@ -47,7 +47,15 @@ def index():
         'SELECT *'
         ' FROM item i'
     ).fetchall()
+
+    # tags = db.execute(
+    #     'SELECT *'
+    #     ' FROM tags t'
+    # ).fetchall()
+    # items['dataset_author'] = items.get('dataset_author', '').split(",")
+
     print(items)
+    # print(items['dataset_author'])
     return render_template('store/index.html', items=items)
 
 
