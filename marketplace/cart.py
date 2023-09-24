@@ -107,8 +107,8 @@ def tag(item_dataset_author):
     print(all)
     cart_items = db.execute(
         'SELECT i.item_name, i.dataset_author, i.item_description, i.item_image FROM item i'
-        ' WHERE i.dataset_author = ?',
-        [item_dataset_author]
+        ' WHERE i.dataset_author like ?',
+        ["%"+item_dataset_author.strip().replace(" ", "%")+"%"]
     ).fetchall()
     total_price = 0
     # for item in cart_items:

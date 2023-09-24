@@ -78,23 +78,22 @@
 
 
 
-<div class="d-inline-flex" style="overflow: auto; padding-bottom: 5px;">
+<div class="d-inline-flex" style="overflow: auto; padding-bottom: 5px; width: 100%; justify-content: center">
 
-{% for tag in item['dataset_author'].split(",") %}
-
-<span class="badge p-2 align-items-center text-primary-emphasis bg-primary-subtle rounded-pill" style="margin: 5px;">
-  <a href="/tag/{{tag}}" class="text-decoration-none">
-    <span class="px-1">{{tag}}</span>
-    <svg class="bi ms-1" width="16" height="16">
-      <use xlink:href="#x-circle-fill"></use>
-    </svg>
-  </a>
-</span>
-
+{% for tag_ in item['dataset_author'].split(",") %}
+    {% for tag in [tag_.strip()] %}
+    <span class="badge p-2 align-items-center text-primary-emphasis bg-primary-subtle rounded-pill" style="margin: 5px">
+      <a href="/tag/{{tag}}" class="text-decoration-none">
+        <span class="px-1">{{tag}}</span>
+{#        <svg class="bi ms-1" width="16" height="16">#}
+{#          <use xlink:href="#x-circle-fill"></use>#}
+{#        </svg>#}
+      </a>
+    </span>
+    {% endfor %}
   {% endfor %}
 
 </div>
-
 
 <br>
 
