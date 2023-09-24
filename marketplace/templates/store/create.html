@@ -49,14 +49,37 @@
         <input class="form-control" name="item_description" id="item_description">
       </div>
       <div class="custom-file">
-        <input class="custom-file-input" type="file" id="item_image" name="item_image" accept="image/*">
-        <label class="custom-file-label" for="image">Изображение датасета</label>
+        <input class="custom-file-input" type="file" id="item_image" name="item_image" accept="image/*" onchange="updateImageLabel(this)" >
+        <label class="custom-file-label" id="imageLabel" for="image">Изображение датасета</label>
       </div>
+
+    <script>
+      function updateImageLabel(input) {
+        var label = document.getElementById('imageLabel');
+        if (input.files.length > 0) {
+          label.innerText = input.files[0].name;
+        } else {
+          label.innerText = 'Загрузить данные';
+        }
+      }
+    </script>
+
       <p> </p>
-      <div class="custom-file">
-        <input class="custom-file-input" type="file" id="item_file" name="item_file" accept=".xls,.csv,.xlsx,">
-        <label class="custom-file-label" for="file">Загрузить данные</label>
-      </div>
+        <div class="custom-file">
+          <input class="custom-file-input" type="file" id="item_file" name="item_file" accept=".xls,.csv,.xlsx," onchange="updateFileLabel(this)">
+          <label class="custom-file-label" id="fileLabel" for="file">Загрузить данные</label>
+        </div>
+
+        <script>
+          function updateFileLabel(input) {
+            var label = document.getElementById('fileLabel');
+            if (input.files.length > 0) {
+              label.innerText = input.files[0].name;
+            } else {
+              label.innerText = 'Загрузить данные';
+            }
+          }
+        </script>
       <p> </p>
       <div class="form-group">
         <label for="Теги">Теги</label>
