@@ -106,15 +106,14 @@ def tag(item_dataset_author):
     all = db.execute('Select * from cart').fetchall()
     print(all)
     cart_items = db.execute(
-        'SELECT cart_id, i.item_name, i.dataset_author, i.item_description, i.item_image FROM cart c'
-        ' INNER JOIN item i ON c.item_id = i.id'
+        'SELECT i.item_name, i.dataset_author, i.item_description, i.item_image FROM item i'
         ' WHERE i.dataset_author = ?',
         [item_dataset_author]
     ).fetchall()
     total_price = 0
     # for item in cart_items:
     #     total_price = total_price + item['price']
-    return render_template('cart/checkout.html', cart_items=cart_items, total_price=total_price)
+    return render_template('cart/tag.html', cart_items=cart_items, total_price=total_price)
 
 
 @bp.route('/delete/<cart_item_id>', methods=['POST'])
