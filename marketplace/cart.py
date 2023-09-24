@@ -96,6 +96,27 @@ def checkout():
     return render_template('cart/checkout.html', cart_items=cart_items, total_price=total_price)
 
 
+@bp.route('/tag/<item_dataset_author>', methods=['GET'])
+@login_required
+def tag(item_dataset_author):
+    item_dataset_author = item_dataset_author.replace(" ", "")
+    item_dataset_author = item_dataset_author.strip()
+    print(item_dataset_author)
+    db = get_db()
+    all = db.execute('Select * from cart').fetchall()
+    print(all)
+    cart_items = db.execute(
+        'SELECT cart_id, i.item_name, i.dataset_author, i.item_description, i.item_image FROM cart c'
+        ' INNER JOIN item i ON c.item_id = i.id'
+        ' WHERE i.dataset_author = ?',
+        [item_dataset_author]
+    ).fetchall()
+    total_price = 0
+    # for item in cart_items:
+    #     total_price = total_price + item['price']
+    return render_template('cart/checkout.html', cart_items=cart_items, total_price=total_price)
+
+
 @bp.route('/delete/<cart_item_id>', methods=['POST'])
 @login_required
 def delete_item(cart_item_id):
