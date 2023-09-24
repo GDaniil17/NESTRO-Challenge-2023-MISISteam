@@ -32,8 +32,10 @@ bp = Blueprint('cart', __name__)
 def add_cart(item_id):
     db = get_db()
     print("get db!")
+    # TODO
     db.execute(
-        'INSERT INTO cart (user_id, item_id)'
+        'INSERT INTO cart (user_id, item_id) '
+        # f"VALUES ({g.user['id']}, {item_id})"
         ' SELECT ?, ?'
         ' WHERE NOT EXISTS (SELECT 1 FROM cart WHERE item_id = ?)',
         (g.user['id'], item_id, item_id)
@@ -47,8 +49,8 @@ def add_cart(item_id):
 def read_file(path):
     import os
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    print(f"!!!!(((((()))))) {dir_path}")
-    with open(dir_path+"/"+path, newline='') as file:
+    print(f"!!!!(((((()))))) {dir_path+'/'+path}")
+    with open(dir_path+"/"+path, newline='', encoding='utf-8') as file:
         reader = csv.reader(file, quotechar='"')
         lines = [tuple(row) for row in reader]
     return (lines[0], lines[1:])
