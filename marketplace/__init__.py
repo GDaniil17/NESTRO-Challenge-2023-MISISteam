@@ -5,7 +5,6 @@ from . import db
 from . import auth
 from . import store
 from . import cart
-from flask import send_from_directory
 from flask import render_template
 from werkzeug.utils import secure_filename
 import csv
@@ -15,7 +14,6 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 def create_app(test_config=None):
-    # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -23,19 +21,15 @@ def create_app(test_config=None):
     )
 
     if test_config is None:
-        # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
     else:
-        # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
-    # a simple page that says hello :)
     @app.route('/hello')
     def hello():
         return "Hello World!! 🤡"
@@ -46,10 +40,6 @@ def create_app(test_config=None):
             lines = [tuple(row) for row in reader]
         return (lines[0], lines[1:])
 
-    # headers = ("Rank", "Username", "Categories", "Subscribers", "Country", "Visits", "Likes", "Comments" и "Links")
-    # rows = (('Боба Биба Бобович', '18', 'Male'),
-    #         ('Боба Биба Бобович', '20', 'Male')
-    #         )
 
     @app.route('/table/<path>')
     def table(path):
@@ -98,13 +88,10 @@ def create_app(test_config=None):
     @app.route('/upload_file', methods=['GET', 'POST'])
     def upload_file():
         if request.method == 'POST':
-            # check if the post request has the file part
             if 'file' not in request.files:
                 flash('No file part')
                 return redirect(request.url)
             file = request.files['file']
-            # If the user does not select a file, the browser submits an
-            # empty file without a filename.
             if file.filename == '':
                 flash('No selected file')
                 return redirect(request.url)
@@ -114,7 +101,6 @@ def create_app(test_config=None):
                 return redirect(url_for('upload_file', name=filename))
         return render_template('loader.html')
 
-    # initialize app and blueprints
     db.init_app(app)
     app.register_blueprint(auth.bp)
     app.register_blueprint(store.bp)

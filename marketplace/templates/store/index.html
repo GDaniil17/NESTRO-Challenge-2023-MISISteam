@@ -68,6 +68,15 @@
 </style>
 
 <div class="container mt-50 mb-50">
+ {% if title %}
+    <h1 style="text-align: center; margin-bottom: 20px">Результаты по тегу
+    <span class="badge p-2 align-items-center text-primary-emphasis bg-primary-subtle rounded-pill" style="margin: 5px">
+      <a href="/tag/Баку" class="text-decoration-none">
+        <span class="px-1">{{ title }}</span>
+      </a>
+    </span>
+    </h1>
+ {% endif %}
   <div class="row d-flex">
     {% for item in items %}
     <div class="col-md-4 align-items-stretch" style="margin-bottom: 10px">
