@@ -11,6 +11,10 @@ from marketplace.db import get_db
 from marketplace.auth import login_required
 from flask import Blueprint, g, flash, redirect, url_for
 import os
+import joblib
+
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 
 bp = Blueprint('cart', __name__)
@@ -40,6 +44,24 @@ def read_file(path):
 def table(path):
     headers, rows = read_file(path)
     return render_template('columns.html', headers=headers, rows=rows)
+
+
+# взаимодействие с моделью
+def ml_predictions(columns):
+    loaded_model = joblib.load(r'learn-to-rank.pkl')
+    new_data = {'Длина': [len(word) for word in columns],
+                'Строка': columns}
+    df = pd.DataFrame(new_data)
+    X = df[['Длина']]
+    scaler = StandardScaler()
+    new_data_scaled = scaler.fit_transform(X)
+    new_data_scaled = scaler.transform(X)
+    predictions = loaded_model.predict(new_data_scaled)
+    ranked_data = pd.DataFrame({'Строка': new_data['Строка'], 'Предсказанный Рейтинг': predictions})
+    ranked_data = ranked_data.sort_values(by='Предсказанный Рейтинг', ascending=False)
+    print("Ранжированный список строк:")
+    print(ranked_data)
+    return ranked_data
 
 
 @bp.route('/preview/<int:item_id>', methods=['POST', 'GET'])
