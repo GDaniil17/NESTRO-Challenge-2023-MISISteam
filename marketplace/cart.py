@@ -110,10 +110,18 @@ def tag(item_dataset_author):
         ' WHERE i.dataset_author like ?',
         ["%"+item_dataset_author.strip().replace(" ", "%")+"%"]
     ).fetchall()
+
+    items = db.execute(
+        'SELECT *'
+        ' FROM item i'
+        ' WHERE i.dataset_author like ?',
+        ["%"+item_dataset_author.strip().replace(" ", "%")+"%"]
+    ).fetchall()
+
     total_price = 0
     # for item in cart_items:
     #     total_price = total_price + item['price']
-    return render_template('cart/tag.html', cart_items=cart_items, total_price=total_price)
+    return render_template('store/index.html', items=items)
 
 
 @bp.route('/delete/<cart_item_id>', methods=['POST'])
