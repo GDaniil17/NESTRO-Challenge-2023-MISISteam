@@ -1,29 +1,24 @@
 # NESTRO-Challenge-2023-MIUSSIERS
 
-Python / Flask Workshop Series Code
+Код на Python / Flask
 
-This marketplace application is using the flask web framework and was used to teach an intro-level python workshop
+### Чтобы запустить это приложение локально:
 
-### To run this application locally:
+1. Клонируйте репозиторий.
+2. Убедитесь, что у вас установлен Python 3.6 и Flask.
 
-1. Clone the repo
-2. Make sure you have Python 3.6 and flask installed
+Скачать Python 3.6: https://www.python.org/downloads/release/python-360/
 
-Download Python 3.6: https://www.python.org/downloads/release/python-360/
+Установите Flask с помощью команды:
 
-```
 pip install -U Flask
 
-```
+3. Убедитесь, что вы находитесь в каталоге /marketplace-tutorial и выполните следующие команды в терминале:
 
-3. Make sure you are in the /marketplace-tutorial directory and run the following commands in your terminal:
-
-```
 export FLASK_APP=marketplace
 export FLASK_ENV=development
 flask run
-```
 
-4. Navigate to the url provided in the terminal to see the web application
+4. Перейдите по URL-адресу, указанному в терминале, чтобы увидеть веб-приложение.
 
 # Hack_MISUISSERS
