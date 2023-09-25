@@ -15,9 +15,11 @@ pip install -U Flask
 
 3. Убедитесь, что вы находитесь в каталоге /marketplace-tutorial и выполните следующие команды в терминале:
 
-export FLASK_APP=marketplace
-export FLASK_ENV=development
-flask run
+- export FLASK_APP=marketplace
+
+- export FLASK_ENV=development
+
+- flask run
 
 4. Перейдите по URL-адресу, указанному в терминале, чтобы увидеть веб-приложение.
 
