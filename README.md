@@ -15,10 +15,22 @@ pip install -U Flask
 
 3. Убедитесь, что вы находитесь в каталоге /marketplace и выполните следующие команды в терминале:
 
+Для Mac/Linux:
+
 ```
 export FLASK_APP=marketplace
 
 export FLASK_ENV=development
+
+flask run
+```
+
+Для Windows:
+
+```
+set FLASK_APP=marketplace
+
+set FLASK_ENV=development
 
 flask run
 ```
