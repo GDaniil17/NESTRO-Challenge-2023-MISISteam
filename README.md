@@ -1,4 +1,4 @@
-# marketplace-tutorial
+# NESTRO-Challenge-2023-MIUSSIERS
 
 Python / Flask Workshop Series Code
 
@@ -27,4 +27,3 @@ flask run
 4. Navigate to the url provided in the terminal to see the web application
 
 # Hack_MISUISSERS
-# Pseudo_Code_Hack
