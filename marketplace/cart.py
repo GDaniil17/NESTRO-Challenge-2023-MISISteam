@@ -22,7 +22,6 @@ bp = Blueprint('cart', __name__)
 @login_required
 def add_cart(item_id):
     db = get_db()
-    print("get db!")
     # TODO
     db.execute(
         'INSERT INTO cart (user_id, item_id) '
@@ -32,14 +31,12 @@ def add_cart(item_id):
         (g.user['id'], item_id, item_id)
     )
     db.commit()
-    print("Item added!")
     # flash("Item successfully added to cart", 'success')
     return redirect(url_for('store.index'))
 
 
 def read_file(path):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    print(f"!!!!(((((()))))) {dir_path+'/'+path}")
     with open(dir_path+"/"+path, newline='', encoding='utf-8') as file:
         reader = csv.reader(file, quotechar='"')
         lines = [tuple(row) for row in reader]
@@ -55,14 +52,12 @@ def table(path):
 @login_required
 def preview(item_id):
     db = get_db()
-    print(f"get db!!!! {item_id}")
     file_name = db.execute(
         'SELECT file_name, id FROM item '
         f'WHERE id = {item_id}'
     ).fetchone()
 
     db.commit()
-    print("Item selected!")
     path = f"static/files/{file_name['file_name']}"
     # flash("Item successfully added to cart", 'success')
     return table(path)
@@ -73,7 +68,6 @@ def preview(item_id):
 def checkout():
     db = get_db()
     all = db.execute('Select * from cart').fetchall()
-    print(all)
     cart_items = db.execute(
         'SELECT cart_id, i.item_name, i.dataset_author, i.item_description, i.item_image FROM cart c'
         ' INNER JOIN item i ON c.item_id = i.id'
@@ -98,8 +92,6 @@ def tag(item_dataset_author):
 
     new_items = []
     for i in items:
-        print(item_dataset_author, i['dataset_author'], re.search(
-            item_dataset_author, i['dataset_author']))
         if re.search(item_dataset_author, i['dataset_author'].lower()) is not None:
             new_items.append(i)
 
@@ -109,23 +101,19 @@ def tag(item_dataset_author):
 @bp.route('/delete/<cart_item_id>', methods=['POST'])
 @login_required
 def delete_item(cart_item_id):
-    print("HERE")
     db = get_db()
-    print(cart_item_id)
     db.execute('DELETE FROM cart WHERE cart_id = ?', [cart_item_id])
     db.commit()
     return redirect(url_for('cart.checkout'))
 
 
 def create_zip_archive(file_list, archive_name):
-    print(archive_name)
     with zipfile.ZipFile(archive_name, 'w') as zip_file:
         for file_path in file_list:
             file_name = os.path.join(
                 os.getcwd(),
                 fr'marketplace\static\files\{file_path}'
             )
-            print(f"filename!!!! {file_name}")
             # file_name = os.path.basename(file_path)
             zip_file.write(file_name, file_path)
 
@@ -143,27 +131,18 @@ def download_zip():
     db.commit()
     zip_name = 'dataset.zip'  # uuid.uuid4().hex+".zip"
     files = [item['original_file_name'] for item in cart_items]
-    print(f"!!!!!!!!!!!!!!!!!! {files}")
     # create_zip_archive(files, zip_name)
     path = os.path.join(
         os.getcwd(),
         fr'marketplace\static\files\{zip_name}'
     )
-    print("GOT")
     cache = tempfile.NamedTemporaryFile()
-    print("!!!!!!!!!!!!!!")
-    print("!!!!!!!!!!!!!!")
-    print("!!!!!!!!!!!!!!")
-    print("!!!!!!!!!!!!!!")
-    print("!!!!!!!!!!!!!!")
-    print(path)
     path = path.replace("\\", "/")
 
     with open(path, 'rb') as fp:
         shutil.copyfileobj(fp, cache)
         cache.flush()
     cache.seek(0)
-    print("?????????????")
     return send_file(cache, as_attachment=True, download_name=zip_name)
 
 
@@ -177,7 +156,6 @@ def get_PATH_by_item_id(item_id):
     db.commit()
     import os
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    print(dir_path+"/static/files/"+file_name['original_file_name'])
     return dir_path+"/static/files/"+file_name['original_file_name']
 
 
@@ -185,7 +163,6 @@ def get_PATH_by_item_id(item_id):
 @login_required
 def download_item(item_id):
     PATH = get_PATH_by_item_id(item_id)
-    print("!!!!(((((()))))) ", PATH)
     if PATH:
         return send_file(PATH, as_attachment=True)
     else:
@@ -198,15 +175,12 @@ def download_item(item_id):
 @login_required
 def mail_item(item_id):
     import os
-    print("HERE")
     PATH = get_PATH_by_item_id(item_id)
     db = get_db()
     file_name = db.execute(
         'SELECT id, item_description, item_name FROM item '
         f'WHERE id = {item_id}'
     ).fetchone()
-
-    print("!!!!(****** ", PATH, os.path.isfile(PATH))
     email_address = ''
     subject = 'Датасет - '+str(file_name['item_name'])
     body = 'Описание датасета - ' + str(file_name['item_description'])

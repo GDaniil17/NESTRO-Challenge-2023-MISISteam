@@ -5,12 +5,11 @@ import os
 import uuid
 from werkzeug.utils import secure_filename
 import pandas as pd
-import openpyxl
 
 from marketplace.auth import login_required, admin_only
 from marketplace.db import get_db
 from flask import render_template, flash, redirect, url_for
-from .db import get_all_items, get_item_by_id
+from .db import get_item_by_id
 
 
 bp = Blueprint('store', __name__)
@@ -24,9 +23,6 @@ def index():
     if not g.user:
         return redirect(url_for('auth.login'))
     db = get_db()
-
-    # db.execute("DROP TABLE cart")
-    # db.execute("DROP TABLE item")
 
     db.execute('CREATE TABLE IF NOT EXISTS item (id INTEGER PRIMARY KEY AUTOINCREMENT,'
                'item_name TEXT NOT NULL,'
@@ -48,14 +44,6 @@ def index():
         ' FROM item i'
     ).fetchall()
 
-    # tags = db.execute(
-    #     'SELECT *'
-    #     ' FROM tags t'
-    # ).fetchall()
-    # items['dataset_author'] = items.get('dataset_author', '').split(",")
-
-    print(items)
-    # print(items['dataset_author'])
     return render_template('store/index.html', items=items)
 
 
@@ -63,43 +51,24 @@ def index():
 @login_required
 # @admin_only
 def create():
-    print(f"!!!!!!!!!!!!! {request.method}")
     if request.method == 'POST':
         data = request.values.to_dict()
-        print(data)
         item_name = data["item_name"]
         item_description = data["item_description"]
         item_image = request.files["item_image"]
         item_file = request.files["item_file"]
         errors = []
-        print("PATH", request.files["item_file"])
-
-        print(f"!!!!!!!!!!)))__ {len(item_file.filename)}")
         dataset_author = data["dataset_author"]
 
         if len(item_file.filename) != 0:
             secure_filename(item_file.filename)
             secured_name = uuid.uuid4().hex
-
-            # TODO: сохранять в таблицу связь secured_name -> item_id
-            # db = get_db()
-            # print("Get to DB")
-            # print(item_id, secured_name)
-            # db.execute(
-            #     'INSERT INTO secured (item_id, secured_name)'
-            #     ' VALUES (?, ?)',
-            #     (item_id, secured_name)
-            # )
-            # db.commit()
             file_name = secured_name + '.'+(item_file.filename.split('.')[-1])
             original_file_name = file_name
 
             item_file.save(os.path.join(FILE_FOLDER, file_name))
             if (item_file.filename.split('.')[-1]) == "xlsx":
-                print("Get xlsx!!!!!!!!!!!!!!!")
-                print(os.path.join(FILE_FOLDER, file_name))
                 data = pd.read_excel(os.path.join(FILE_FOLDER, file_name))
-                print("2!")
                 PATH = os.path.join(FILE_FOLDER, secured_name)
                 data.to_csv(PATH+'.csv', index=False)
                 file_name = secured_name + '.csv'
@@ -108,24 +77,19 @@ def create():
             error = 'Нужно выбрать файл с данными'
             errors.append(error)
             flash(error)
-            print(error)
-            # return render_template('store/create.html')
 
         if not item_description:
             error = 'Описание обязательно'
             errors.append(error)
             flash(error)
-            print(error)
         if not item_image:
             error = 'Изображение обязательно'
             errors.append(error)
             flash(error)
-            print(error)
         if not item_file:
             error = 'Набор данных обязателен'
             errors.append(error)
             flash(error)
-            print(error)
 
         if item_image:
             secure_filename(item_image.filename)
@@ -135,13 +99,9 @@ def create():
             error = 'Заголовок обязателен'
             errors.append(error)
             flash(error)
-            print(error)
         else:
             try:
                 db = get_db()
-                print("Get to DB")
-                print((item_name, item_description,
-                       item_image.filename, dataset_author, file_name))
                 db.execute(
                     'INSERT INTO item (item_name, item_description, item_image, dataset_author, secured_name, file_name, original_file_name)'
                     ' VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -150,7 +110,6 @@ def create():
                 )
                 db.commit()
 
-                print(item_name + ' was added to the store', 'success')
                 flash(item_name + ' was added to the store', 'success')
             except:
                 return render_template('store/create.html', errors=errors)
@@ -166,22 +125,6 @@ def delete(item_id):
     db.execute('DELETE FROM item WHERE id = ?', [item_id])
     db.commit()
     return redirect(url_for('store.index'))
-
-
-# @bp.route('/store')
-# def index():
-#     items = get_all_items()
-#     return render_template('store/index.html', items=items)
-
-
-# @bp.route('/store/item/<int:item_id>')
-# def view_item(item_id):
-#     db = get_db()
-#     item = db.get_item_by_id(item_id)
-#     if item:
-#         return render_template('store/item.html', item=item)
-#     flash('Item not found')
-#     return redirect(url_for('store.index'))
 
 
 @bp.route('/store/item/<int:item_id>')
