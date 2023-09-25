@@ -112,7 +112,8 @@ def tag(item_dataset_author):
 
     new_items = []
     for i in items:
-        print(item_dataset_author, i['dataset_author'], re.search(item_dataset_author, i['dataset_author']))
+        print(item_dataset_author, i['dataset_author'], re.search(
+            item_dataset_author, i['dataset_author']))
         if re.search(item_dataset_author, i['dataset_author'].lower()) is not None:
             new_items.append(i)
 
@@ -134,12 +135,22 @@ def create_zip_archive(file_list, archive_name):
     print(archive_name)
     with zipfile.ZipFile(archive_name, 'w') as zip_file:
         for file_path in file_list:
+<<<<<<< HEAD
             # Получаем полный путь к файлу
             full_path = os.path.join(os.getcwd(), 'marketplace', 'static', 'files', file_path)
 
             print(f"!!!!!!!!*** {file_path} {os.path.exists(full_path)}")
             # Добавляем файл в архив
             zip_file.write(full_path, file_path)
+=======
+            file_name = os.path.join(
+                os.getcwd(),
+                fr'marketplace\static\files\{file_path}'
+            )
+            print(f"filename!!!! {file_name}")
+            # file_name = os.path.basename(file_path)
+            zip_file.write(file_name, file_path)
+>>>>>>> 47fcd0d (ok)
 
 
 @bp.route('/download_zip', methods=['POST'])
@@ -153,13 +164,17 @@ def download_zip():
         [g.user['id']]
     ).fetchall()
     db.commit()
-    zip_name = '1987f5f539e3406a979d97338efade39.zip'# uuid.uuid4().hex+".zip"
+    zip_name = '1987f5f539e3406a979d97338efade39.zip'  # uuid.uuid4().hex+".zip"
     files = [item['original_file_name'] for item in cart_items]
     print(f"!!!!!!!!!!!!!!!!!! {files}")
     create_zip_archive(files, zip_name)
     path = os.path.join(
         os.getcwd(),
+<<<<<<< HEAD
         fr'marketplace/static/files/{zip_name}'
+=======
+        fr'marketplace\static\files\{zip_name}'
+>>>>>>> 47fcd0d (ok)
     )
     cache = tempfile.NamedTemporaryFile()
     with open(path, 'rb') as fp:
@@ -167,7 +182,6 @@ def download_zip():
         cache.flush()
     cache.seek(0)
     return send_file(cache, as_attachment=True, download_name=zip_name)
-
 
 
 def get_PATH_by_item_id(item_id):
