@@ -63,6 +63,9 @@
             {% endfor %}
         </div>
     </div>
+    <form action="{{ url_for('cart.download_zip')}}" method="post">
+        <button class="btn btn-success" type="submit" style="justify-content: center;width: 100%;">Скачать архивом</button>
+    </form>
 </div>
 
 {% endblock %}

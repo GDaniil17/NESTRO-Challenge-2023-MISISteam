@@ -69,3 +69,13 @@
 
 </div>
 </section></body></html>
+
+{% if error %}
+<div class="alert alert-danger" style="margin-top: 10px; text-align: center">
+<ul>
+  {% for err in error %}
+  <li>{{ err }}</li>
+  {% endfor %}
+</ul>
+</div>
+{% endif %}

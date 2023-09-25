@@ -1,3 +1,7 @@
+import uuid
+import zipfile
+import shutil
+import tempfile
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, send_file, redirect, Flask
 )
@@ -8,6 +12,7 @@ from marketplace.auth import login_required
 from flask import Blueprint, g, flash, redirect, url_for
 from flask_mail import Mail
 from flask_mail import Message
+import os
 
 
 bp = Blueprint('cart', __name__)
@@ -47,7 +52,6 @@ def add_cart(item_id):
 
 
 def read_file(path):
-    import os
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print(f"!!!!(((((()))))) {dir_path+'/'+path}")
     with open(dir_path+"/"+path, newline='', encoding='utf-8') as file:
@@ -90,38 +94,29 @@ def checkout():
         ' WHERE c.user_id = ?',
         [g.user['id']]
     ).fetchall()
-    total_price = 0
-    # for item in cart_items:
-    #     total_price = total_price + item['price']
-    return render_template('cart/checkout.html', cart_items=cart_items, total_price=total_price)
+    return render_template('cart/checkout.html', cart_items=cart_items)
 
 
 @bp.route('/tag/<item_dataset_author>', methods=['GET'])
 @login_required
 def tag(item_dataset_author):
-    item_dataset_author = item_dataset_author.replace(" ", "")
-    item_dataset_author = item_dataset_author.strip()
-    print(item_dataset_author)
+    import re
+    item_dataset_author = item_dataset_author.strip().lower()
+    item_dataset_author = item_dataset_author.replace(" ", "*")
     db = get_db()
-    all = db.execute('Select * from cart').fetchall()
-    print(all)
-    cart_items = db.execute(
-        'SELECT i.item_name, i.dataset_author, i.item_description, i.item_image FROM item i'
-        ' WHERE i.dataset_author like ?',
-        ["%"+item_dataset_author.strip().replace(" ", "%")+"%"]
-    ).fetchall()
 
     items = db.execute(
         'SELECT *'
         ' FROM item i'
-        ' WHERE i.dataset_author like ?',
-        ["%"+item_dataset_author.strip().replace(" ", "%")+"%"]
     ).fetchall()
 
-    total_price = 0
-    # for item in cart_items:
-    #     total_price = total_price + item['price']
-    return render_template('store/index.html', items=items)
+    new_items = []
+    for i in items:
+        print(item_dataset_author, i['dataset_author'], re.search(item_dataset_author, i['dataset_author']))
+        if re.search(item_dataset_author, i['dataset_author'].lower()) is not None:
+            new_items.append(i)
+
+    return render_template('store/index.html', items=new_items)
 
 
 @bp.route('/delete/<cart_item_id>', methods=['POST'])
@@ -133,6 +128,46 @@ def delete_item(cart_item_id):
     db.execute('DELETE FROM cart WHERE cart_id = ?', [cart_item_id])
     db.commit()
     return redirect(url_for('cart.checkout'))
+
+
+def create_zip_archive(file_list, archive_name):
+    with zipfile.ZipFile(archive_name, 'w') as zip_file:
+        for file_path in file_list:
+            file_name = os.path.join(
+                os.getcwd(),
+                fr'marketplace\static\files\{file_path}'
+            )
+            print(f"filename!!!! {file_name}")
+            #file_name = os.path.basename(file_path)
+            zip_file.write(file_name, file_path)
+
+
+@bp.route('/download_zip', methods=['POST'])
+@login_required
+def download_zip():
+    db = get_db()
+    cart_items = db.execute(
+        'SELECT cart_id, i.item_name, i.dataset_author, i.item_description, i.original_file_name FROM cart c'
+        ' INNER JOIN item i ON c.item_id = i.id'
+        ' WHERE c.user_id = ?',
+        [g.user['id']]
+    ).fetchall()
+    db.commit()
+    zip_name = '1987f5f539e3406a979d97338efade39.zip'# uuid.uuid4().hex+".zip"
+    files = [item['original_file_name'] for item in cart_items]
+    print(f"!!!!!!!!!!!!!!!!!! {files}")
+    create_zip_archive(files, zip_name)
+    path = os.path.join(
+        os.getcwd(),
+        fr'marketplace\static\files\{zip_name}'
+    ).replace(r"\\",r'\\')
+    cache = tempfile.NamedTemporaryFile()
+    with open(path, 'rb') as fp:
+        shutil.copyfileobj(fp, cache)
+        cache.flush()
+    cache.seek(0)
+    return send_file(cache, as_attachment=True, download_name=zip_name)
+
 
 
 def get_PATH_by_item_id(item_id):

@@ -11,14 +11,23 @@
 
     <form class="d-flex" role="search">
     <input id="searchInput" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search"
+
       onchange="updateTagLink()">
     <a id="tagLink" href="/tag/" class="btn btn-outline-success">Поиск</a>
+
 
     <script>
       function updateTagLink() {
         var searchValue = document.getElementById("searchInput").value;
         var tagLink = document.getElementById("tagLink");
         tagLink.href = "/tag/" + searchValue;
+      }
+      document.getElementById('searchInput').onkeypress = function(e){
+        if (!e) e = window.event;
+        var keyCode = e.code || e.key;
+        if (keyCode == 'Enter'){
+            return false;
+        }
       }
     </script>
     </a>
