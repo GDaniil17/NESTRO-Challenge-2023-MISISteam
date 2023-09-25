@@ -5,21 +5,23 @@
 ### Чтобы запустить это приложение локально:
 
 1. Клонируйте репозиторий.
-2. Убедитесь, что у вас установлен Python 3.6 и Flask.
-
-Скачать Python 3.6: https://www.python.org/downloads/release/python-360/
+2. Убедитесь, что у вас установлен Python 3.6+ и Flask.
 
 Установите Flask с помощью команды:
 
+```
 pip install -U Flask
+```
 
-3. Убедитесь, что вы находитесь в каталоге /marketplace-tutorial и выполните следующие команды в терминале:
+3. Убедитесь, что вы находитесь в каталоге /marketplace и выполните следующие команды в терминале:
 
-- export FLASK_APP=marketplace
+```
+export FLASK_APP=marketplace
 
-- export FLASK_ENV=development
+export FLASK_ENV=development
 
-- flask run
+flask run
+```
 
 4. Перейдите по URL-адресу, указанному в терминале, чтобы увидеть веб-приложение.
 
