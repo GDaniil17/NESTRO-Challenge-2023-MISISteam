@@ -10,8 +10,18 @@
 
 
     <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Поиск</button>
+    <input id="searchInput" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search"
+      onchange="updateTagLink()">
+    <a id="tagLink" href="/tag/" class="btn btn-outline-success">Поиск</a>
+
+    <script>
+      function updateTagLink() {
+        var searchValue = document.getElementById("searchInput").value;
+        var tagLink = document.getElementById("tagLink");
+        tagLink.href = "/tag/" + searchValue;
+      }
+    </script>
+    </a>
     </form>
   </div>
 </nav>
@@ -67,12 +77,6 @@
               <li class="list-inline-item">
                 <p href="#" class="text-muted description" data-abc="true">{{item['item_description']}}</p>
               </li>
-            <!-- </ul>
-
-            <ul class="list-inline list-inline-dotted mb-0">
-              <li class="list-inline-item">Теги : <a href="#" data-abc="true">{{item['dataset_author']}}</a></li>
-              <br>
-            </ul> -->
           </div>
 
 
@@ -85,9 +89,6 @@
     <span class="badge p-2 align-items-center text-primary-emphasis bg-primary-subtle rounded-pill" style="margin: 5px">
       <a href="/tag/{{tag}}" class="text-decoration-none">
         <span class="px-1">{{tag}}</span>
-{#        <svg class="bi ms-1" width="16" height="16">#}
-{#          <use xlink:href="#x-circle-fill"></use>#}
-{#        </svg>#}
       </a>
     </span>
     {% endfor %}
