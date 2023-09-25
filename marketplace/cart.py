@@ -131,15 +131,15 @@ def delete_item(cart_item_id):
 
 
 def create_zip_archive(file_list, archive_name):
+    print(archive_name)
     with zipfile.ZipFile(archive_name, 'w') as zip_file:
         for file_path in file_list:
-            file_name = os.path.join(
-                os.getcwd(),
-                fr'marketplace\static\files\{file_path}'
-            )
-            print(f"filename!!!! {file_name}")
-            #file_name = os.path.basename(file_path)
-            zip_file.write(file_name, file_path)
+            # Получаем полный путь к файлу
+            full_path = os.path.join(os.getcwd(), 'marketplace', 'static', 'files', file_path)
+
+            print(f"!!!!!!!!*** {file_path} {os.path.exists(full_path)}")
+            # Добавляем файл в архив
+            zip_file.write(full_path, file_path)
 
 
 @bp.route('/download_zip', methods=['POST'])
@@ -159,8 +159,8 @@ def download_zip():
     create_zip_archive(files, zip_name)
     path = os.path.join(
         os.getcwd(),
-        fr'marketplace\static\files\{zip_name}'
-    ).replace(r"\\",r'\\')
+        fr'marketplace/static/files/{zip_name}'
+    )
     cache = tempfile.NamedTemporaryFile()
     with open(path, 'rb') as fp:
         shutil.copyfileobj(fp, cache)
