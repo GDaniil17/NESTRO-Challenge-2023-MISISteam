@@ -1,4 +1,4 @@
-# NESTRO-Challenge-2023-MIUSSIERS
+# NESTRO-Challenge-2023-MISISteam
 
 Код на Python / Flask
 
